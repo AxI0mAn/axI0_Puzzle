@@ -91,6 +91,12 @@ button,
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
+
+  transition: all 0s;
+  -webkit-transition: all 0s;
+  -moz-transition: all 0s;
+  -ms-transition: all 0s;
+  -o-transition: all 0s;
 }
 
 /* ✅ Применяем :hover стили ТОЛЬКО на устройствах с мышью (pointer: fine) */
@@ -103,20 +109,26 @@ button,
     box-shadow: 1.94px 1.94px 7.76px 1.94px rgb(0, 0, 0), -1.94px -1.94px 7.76px 1.94px rgb(255, 255, 255);
     background: linear-gradient(45.00deg, rgb(63, 242, 255), rgb(130, 203, 248) 22%, rgb(220, 231, 250) 49.5%, rgb(130, 203, 248) 100%);
     color: #000;
-    transition: all .7s;
-    -webkit-transition: all .7s;
-    -moz-transition: all .7s;
-    -ms-transition: all .7s;
-    -o-transition: all .7s;
+    transition: all .27s;
+    -webkit-transition: all .27s;
+    -moz-transition: all .27s;
+    -ms-transition: all .27s;
+    -o-transition: all .27s;
   }
-}
 
-button:active,
-.select-selected:active,
-.select-style:active,
-#close:active {
-  background: inherit;
-  color: inherit;
+
+  button:active,
+  .select-selected:active,
+  .select-style:active,
+  #close:active {
+    background: inherit;
+    color: inherit;
+    transition: all 0s;
+    -webkit-transition: all 0s;
+    -moz-transition: all 0s;
+    -ms-transition: all 0s;
+    -o-transition: all 0s;
+  }
 }
 
 button#undo-move,

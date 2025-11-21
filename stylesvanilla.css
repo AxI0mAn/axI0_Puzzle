@@ -104,6 +104,7 @@ button:active,
 /* Стили для счётчиков */
 .accounting {
   padding: 10px;
+  color: antiquewhite;
 }
 
 #moves,
