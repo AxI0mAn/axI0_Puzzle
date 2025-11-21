@@ -63,12 +63,14 @@ button:active,
   color: rgb(94, 248, 158);
 }
 
+/* ✅ Применяем :hover стили ТОЛЬКО на устройствах с мышью (pointer: fine) */
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover {
+    box-shadow: 0.4px 0.4px 2px 1.94px rgb(0, 0, 0), -0.4px -0.4px 2px 1.94px rgb(255, 255, 255);
 
-.tile:hover {
-  box-shadow: 0.4px 0.4px 2px 1.94px rgb(0, 0, 0), -0.4px -0.4px 2px 1.94px rgb(255, 255, 255);
-
-  background: linear-gradient(0deg, rgb(61, 76, 75), rgb(31, 38, 41), rgb(61, 76, 75));
-  color: rgb(229, 206, 148);
+    background: linear-gradient(0deg, rgb(61, 76, 75), rgb(31, 38, 41), rgb(61, 76, 75));
+    color: rgb(229, 206, 148);
+  }
 }
 
 /* Адаптация для мобильных устройств */

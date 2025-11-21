@@ -157,14 +157,17 @@ button:active,
   -o-transition: all 1s;
 }
 
-.tile:hover {
-  color: rgb(35, 47, 49);
-  background: linear-gradient(180.00deg, rgba(30, 28, 34, 0.9), rgba(93, 70, 64, 0.9) 24.585%, rgba(162, 137, 122, 0.9) 48.261%, rgba(180, 136, 121, 0.9) 74.661%, rgba(93, 70, 64, 0.9) 100%);
-  transition: all .85s;
-  -webkit-transition: all .85s;
-  -moz-transition: all .85s;
-  -ms-transition: all .85s;
-  -o-transition: all .85s;
+/* ✅ Применяем :hover стили ТОЛЬКО на устройствах с мышью (pointer: fine) */
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover {
+    color: rgb(35, 47, 49);
+    background: linear-gradient(180.00deg, rgba(30, 28, 34, 0.9), rgba(93, 70, 64, 0.9) 24.585%, rgba(162, 137, 122, 0.9) 48.261%, rgba(180, 136, 121, 0.9) 74.661%, rgba(93, 70, 64, 0.9) 100%);
+    transition: all .85s;
+    -webkit-transition: all .85s;
+    -moz-transition: all .85s;
+    -ms-transition: all .85s;
+    -o-transition: all .85s;
+  }
 }
 
 /* Адаптация для мобильных устройств */

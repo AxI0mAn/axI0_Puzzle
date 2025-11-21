@@ -211,16 +211,18 @@ button#records {
   -o-transition: all .5s;
 }
 
-
-.tile:hover {
-  color: rgb(49, 24, 5);
-  box-shadow: 1px 1px 2px 2px rgb(0, 0, 0), -1px -1px 2px 2px rgb(255, 255, 255);
-  background: linear-gradient(180.00deg, white, #71b8e1, rgba(20, 225, 250, .7) 88%, rgb(130, 133, 148) 100%);
-  transition: color .5s;
-  -webkit-transition: color .5s;
-  -moz-transition: color .5s;
-  -ms-transition: color .5s;
-  -o-transition: color .5s;
+/* ✅ Применяем :hover стили ТОЛЬКО на устройствах с мышью (pointer: fine) */
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover {
+    color: rgb(49, 24, 5);
+    box-shadow: 1px 1px 2px 2px rgb(0, 0, 0), -1px -1px 2px 2px rgb(255, 255, 255);
+    background: linear-gradient(180.00deg, white, #71b8e1, rgba(20, 225, 250, .7) 88%, rgb(130, 133, 148) 100%);
+    transition: color .5s;
+    -webkit-transition: color .5s;
+    -moz-transition: color .5s;
+    -ms-transition: color .5s;
+    -o-transition: color .5s;
+  }
 }
 
 /* Адаптация для мобильных устройств */

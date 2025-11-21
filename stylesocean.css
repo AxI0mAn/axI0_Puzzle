@@ -100,14 +100,17 @@ button:active,
   -o-transition: all .5s;
 }
 
-.tile:hover {
-  color: rgb(35, 47, 49);
-  background: linear-gradient(0.00deg, rgba(0, 32, 75, 0.9), rgba(2, 111, 254, 0.5) 24.585%, rgba(0, 213, 255, 0.5) 48.261%, rgba(0, 204, 255, 0.75) 74.661%, rgba(0, 145, 255, 0.9) 100%);
-  transition: all .5s;
-  -webkit-transition: all .5s;
-  -moz-transition: all .5s;
-  -ms-transition: all .5s;
-  -o-transition: all .5s;
+/* ✅ Применяем :hover стили ТОЛЬКО на устройствах с мышью (pointer: fine) */
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover {
+    color: rgb(35, 47, 49);
+    background: linear-gradient(0.00deg, rgba(0, 32, 75, 0.9), rgba(2, 111, 254, 0.5) 24.585%, rgba(0, 213, 255, 0.5) 48.261%, rgba(0, 204, 255, 0.75) 74.661%, rgba(0, 145, 255, 0.9) 100%);
+    transition: all .5s;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+  }
 }
 
 /* Адаптация для мобильных устройств */
