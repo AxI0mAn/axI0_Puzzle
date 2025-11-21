@@ -50,37 +50,41 @@ button#records {
   padding: 10px 15px;
 }
 
-button:hover,
-.select-selected:hover,
-.select-style:hover,
-#close:hover {
-  color: rgb(35, 47, 49);
-  background: linear-gradient(180.00deg, rgba(30, 28, 34, 0.9), rgba(93, 70, 64, 0.9) 24.585%, rgba(162, 137, 122, 0.9) 48.261%, rgba(180, 136, 121, 0.9) 74.661%, rgba(93, 70, 64, 0.9) 100%);
-  transition: all .35s;
-  -webkit-transition: all .35s;
-  -moz-transition: all .35s;
-  -ms-transition: all .35s;
-  -o-transition: all .35s;
-}
+/* ✅ Применяем :hover стили ТОЛЬКО на устройствах с мышью (pointer: fine) */
+@media (hover: hover) and (pointer: fine) {
 
-button:active,
-.select-selected:active,
-.select-style:active,
-#close:active {
-  background: inherit;
-  color: inherit;
+  button:hover,
+  .select-selected:hover,
+  .select-style:hover,
+  #close:hover {
+    color: rgb(35, 47, 49);
+    background: linear-gradient(180.00deg, rgba(30, 28, 34, 0.9), rgba(93, 70, 64, 0.9) 24.585%, rgba(162, 137, 122, 0.9) 48.261%, rgba(180, 136, 121, 0.9) 74.661%, rgba(93, 70, 64, 0.9) 100%);
+    transition: all .35s;
+    -webkit-transition: all .35s;
+    -moz-transition: all .35s;
+    -ms-transition: all .35s;
+    -o-transition: all .35s;
+  }
 
-  box-shadow: 2px 1px 1px 0px rgb(35, 47, 49), 2px 1px 1px 0px rgb(35, 47, 49);
-  transition: all .05s;
-  -webkit-transition: all .05s;
-  -moz-transition: all .05s;
-  -ms-transition: all .05s;
-  -o-transition: all .05s;
-  transform: translateY(1px);
-  -webkit-transform: translateY(1px);
-  -moz-transform: translateY(1px);
-  -ms-transform: translateY(1px);
-  -o-transform: translateY(1px);
+  button:active,
+  .select-selected:active,
+  .select-style:active,
+  #close:active {
+    background: inherit;
+    color: inherit;
+
+    box-shadow: 2px 1px 1px 0px rgb(35, 47, 49), 2px 1px 1px 0px rgb(35, 47, 49);
+    transition: all .05s;
+    -webkit-transition: all .05s;
+    -moz-transition: all .05s;
+    -ms-transition: all .05s;
+    -o-transition: all .05s;
+    transform: translateY(1px);
+    -webkit-transform: translateY(1px);
+    -moz-transform: translateY(1px);
+    -ms-transform: translateY(1px);
+    -o-transform: translateY(1px);
+  }
 }
 
 /* Стили для иконочных кнопок */

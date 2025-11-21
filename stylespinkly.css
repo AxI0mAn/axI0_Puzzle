@@ -33,14 +33,17 @@ button,
   -o-border-radius: 50%;
 }
 
-button:hover,
-.select-selected:hover,
-.select-style:hover,
-#close:hover {
-  background: hwb(319 34% 2%);
-  color: rgba(35, 47, 49, 1);
-}
+/* ✅ Применяем :hover стили ТОЛЬКО на устройствах с мышью (pointer: fine) */
+@media (hover: hover) and (pointer: fine) {
 
+  button:hover,
+  .select-selected:hover,
+  .select-style:hover,
+  #close:hover {
+    background: hwb(319 34% 2%);
+    color: rgba(35, 47, 49, 1);
+  }
+}
 
 #moves,
 #timer {
