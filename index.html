@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>axI0_Puzzle</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="shortcut icon" href="favicon.svg" type="image/x-icon">
+</head>
+
+<body>
+  <header>
+    <img class="logo" src="./favicon.svg">
+    <h1>axI0_Puzzle</h1>
+  </header>
+  <div class="game-container">
+    <div class="header">
+      <div class="controls">
+        <button id="new-game">New Game</button>
+        <div class="move-control">
+          <button id="undo-move">&#8634;</button>
+          <button id="return-move">&#8635;</button>
+        </div>
+        <div class="custom-select">
+          <div class="select-selected">4x4</div>
+          <div class="select-items">
+            <div data-size="4">4x4</div>
+            <div data-size="5">5x5</div>
+            <div data-size="6">6x6</div>
+            <div data-size="8">8x8</div>
+          </div>
+        </div>
+        <button id="records">&#127942;</button>
+        <div class="custom-selectStyle">
+          <div class="select-style">style</div>
+          <div class="select-skins">
+            <div data-style="dark">dark</div>
+            <div data-style="light">light</div>
+            <div data-style="pinkly">pinkly</div>
+            <div data-style="ocean">ocean</div>
+            <div data-style="vanilla">vanilla</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="accounting">
+      <div id="moves">Step: 0</div>
+      <div id="timer">Time: 00:00:00</div>
+    </div>
+    <div id="puzzle-container"></div>
+  </div>
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h2>Victory! </h2>
+      <h2>You did it!</h2>
+      <p>You won from <span id="modal-moves"></span> steps and <span id="modal-time"></span>!</p>
+      <button id="modal-close">continue...</button>
+    </div>
+  </div>
+  <footer>
+    <h4><a class="link_response" href="mailto:ddddaxio@gmail.com">Ⓒ axI0mAn ✉️</a></h4>
+  </footer>
+  <script src="script.js"></script>
+  <script src="scriptCurrent.js"></script>
+  <script src="scriptMoveControl.js"></script>
+  <script src="records.js"></script>
+  <script src="modal.js"></script>
+  <script src="styleSwitcher.js"></script>
+</body>
+
+</html>

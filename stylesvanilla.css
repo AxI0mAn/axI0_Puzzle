@@ -1,0 +1,345 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background: linear-gradient(180.00deg, rgba(30, 28, 34, 1), rgba(93, 70, 64, 1) 24.585%, rgba(162, 137, 122, 1) 48.261%, rgba(180, 136, 121, 1) 74.661%, rgba(93, 70, 64, 1) 100%);
+  font-family: Arial, sans-serif;
+}
+
+.game-container {
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0px 0px 100px 100px rgba(162, 122, 109, 0.5);
+  background: linear-gradient(180.00deg, rgba(30, 28, 34, 0.9), rgba(93, 70, 64, 0.9) 24.585%, rgba(162, 137, 122, 0.9) 48.261%, rgba(180, 136, 121, 0.9) 74.661%, rgba(93, 70, 64, 0.9) 100%);
+}
+
+#puzzle-container {
+  background: linear-gradient(180.00deg, rgba(93, 70, 64, 1), rgba(162, 137, 122, 1), rgba(93, 70, 64, 1));
+}
+
+.header {
+  width: 100%;
+}
+
+.header,
+.accounting,
+.controls {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.controls {
+  width: 100%;
+}
+
+/* Стили для основных кнопок */
+button,
+.select-selected,
+.select-style,
+#close {
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  /**/
+  box-shadow: 2px 2px 2px 0px rgb(35, 47, 49), 2px 2px 2px 0px rgb(35, 47, 49);
+  background: linear-gradient(90.00deg, rgba(35, 47, 49, 0.5), rgb(35, 47, 49) 50%, rgba(35, 47, 49, 0.5) 100%);
+  color: rgba(180, 136, 121, 0.9);
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+
+button#undo-move,
+button#return-move,
+button#records {
+  padding: 10px 15px;
+}
+
+button:hover,
+.select-selected:hover,
+.select-style:hover,
+#close:hover {
+  color: rgb(35, 47, 49);
+  background: linear-gradient(180.00deg, rgba(30, 28, 34, 0.9), rgba(93, 70, 64, 0.9) 24.585%, rgba(162, 137, 122, 0.9) 48.261%, rgba(180, 136, 121, 0.9) 74.661%, rgba(93, 70, 64, 0.9) 100%);
+  transition: all .35s;
+  -webkit-transition: all .35s;
+  -moz-transition: all .35s;
+  -ms-transition: all .35s;
+  -o-transition: all .35s;
+}
+
+button:active,
+.select-selected:active,
+.select-style:active,
+#close:active {
+  background: inherit;
+  color: inherit;
+
+  box-shadow: 2px 1px 1px 0px rgb(35, 47, 49), 2px 1px 1px 0px rgb(35, 47, 49);
+  transition: all .05s;
+  -webkit-transition: all .05s;
+  -moz-transition: all .05s;
+  -ms-transition: all .05s;
+  -o-transition: all .05s;
+  transform: translateY(1px);
+  -webkit-transform: translateY(1px);
+  -moz-transform: translateY(1px);
+  -ms-transform: translateY(1px);
+  -o-transform: translateY(1px);
+}
+
+/* Стили для иконочных кнопок */
+.move-control {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+
+#undo-move,
+#return-move,
+#records {
+  padding: 8px 10px;
+}
+
+#records {
+  padding: 6px 10px;
+}
+
+/* Стили для счётчиков */
+.accounting {
+  padding: 10px;
+}
+
+#moves,
+#timer {
+  margin-top: 10px;
+  color: rgba(180, 136, 121, 0.9);
+  font-size: 1.5rem;
+}
+
+/* Основные стили для игрового поля */
+#puzzle-container {
+  display: grid;
+  gap: 5px;
+  width: 512px;
+  height: 512px;
+
+  padding: 8px;
+
+  border: 4px solid rgba(162, 122, 109, 0.5);
+  box-shadow: inset 2px 2px 4px 1px rgb(0, 0, 0), inset -2px -2px 4px 2px rgba(0, 0, 0, 0.2);
+
+  margin: 0 auto;
+  border-radius: 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  -ms-border-radius: 16px;
+  -o-border-radius: 16px;
+}
+
+/* Стили для костяшек */
+.tile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+
+  box-shadow: 2px 2px 2px 0px rgb(35, 47, 49), 2px 2px 2px 0px rgb(35, 47, 49);
+  background: linear-gradient(90deg, rgba(35, 47, 49, 0.5), rgb(35, 47, 49) 50%, rgba(35, 47, 49, 0.5) 100%);
+  color: rgba(180, 136, 121, 0.9);
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+  transition: all 1s;
+  -webkit-transition: all 1s;
+  -moz-transition: all 1s;
+  -ms-transition: all 1s;
+  -o-transition: all 1s;
+}
+
+.tile:hover {
+  color: rgb(35, 47, 49);
+  background: linear-gradient(180.00deg, rgba(30, 28, 34, 0.9), rgba(93, 70, 64, 0.9) 24.585%, rgba(162, 137, 122, 0.9) 48.261%, rgba(180, 136, 121, 0.9) 74.661%, rgba(93, 70, 64, 0.9) 100%);
+  transition: all .85s;
+  -webkit-transition: all .85s;
+  -moz-transition: all .85s;
+  -ms-transition: all .85s;
+  -o-transition: all .85s;
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 760px) {
+  #puzzle-container {
+    width: 88vmin;
+    /*Занимает90%шириныродительскогоконтейнера*/
+    height: 88vmin;
+    transition: all .35s;
+    -webkit-transition: all .35s;
+    -moz-transition: all .35s;
+    -ms-transition: all .35s;
+    -o-transition: all .35s;
+  }
+}
+
+/* Стили для пустой ячейки */
+.empty,
+.empty:hover {
+  background-color: transparent;
+  background: none;
+  box-shadow: none;
+  cursor: default;
+}
+
+/* Стили для кастомного выпадающего списка */
+.custom-select,
+.custom-selectStyle {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.select-items,
+.select-skins {
+  position: absolute;
+  top: 100%;
+  /* Открывается под select */
+  left: 0;
+  right: 0;
+  z-index: 99;
+  border-radius: 5px;
+  box-shadow: 0 4px 2px rgba(0, 0, 0, 0.1);
+  display: none;
+  background: linear-gradient(90.00deg, rgba(30, 28, 34, 0.9), rgba(93, 70, 64, 0.9) 24.585%, rgba(162, 137, 122, 0.9) 48.261%, rgba(180, 136, 121, 0.9) 74.661%, rgba(93, 70, 64, 0.9) 100%);
+  color: rgb(49, 24, 5);
+  transition: all .85s;
+  -webkit-transition: all .85s;
+  -moz-transition: all .85s;
+  -ms-transition: all .85s;
+  -o-transition: all .85s;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+
+.select-items div,
+.select-skins div {
+  padding: 10px;
+  cursor: pointer;
+  color: #333;
+}
+
+.select-items div:hover,
+.select-skins div:hover {
+  background: linear-gradient(90deg, rgba(35, 47, 49, 0.5), rgb(35, 47, 49) 50%, rgba(35, 47, 49, 0.5) 100%);
+  color: rgba(180, 136, 121, 0.9);
+}
+
+/* Отображение выпадающего списка при активации */
+.custom-select.active .select-items,
+.custom-selectStyle.active .select-skins {
+  display: block;
+}
+
+/* Стили для модального окна с рекордами */
+
+.recordsBox {
+  grid-row: 1/10;
+  grid-column: 1/10;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.recordsBox__header {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 4px solid rgba(162, 122, 109, 0.5);
+}
+
+.recordBox__title {
+  flex: auto;
+}
+
+#close {
+  padding: 10px;
+  margin-right: 20px;
+}
+
+.recordsList {
+  padding-left: 10px;
+  text-align: left;
+  font-size: large;
+}
+
+.recordItem {
+  margin-top: 8px;
+  list-style: none;
+}
+
+/* Стили для модального окна */
+.modal {
+  display: none;
+  /* Скрыто по умолчанию */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* Полупрозрачный фон */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* Убедитесь, что модальное окно поверх других элементов */
+}
+
+.modal-content {
+  background: linear-gradient(180deg, rgba(30, 28, 34, 0.9), rgba(93, 70, 64, 0.9) 24.585%, rgba(162, 137, 122, 0.9) 48.261%, rgba(180, 136, 121, 0.9) 74.661%, rgba(93, 70, 64, 0.9) 100%);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  color: white;
+  max-width: 300px;
+  width: 90%;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+}
+
+.modal-content p {
+  font-size: 18px;
+}
+
+#modal-close {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background: linear-gradient(180.00deg, rgba(30, 28, 34, 0.9), rgba(93, 70, 64, 0.9) 24.585%, rgba(162, 137, 122, 0.9) 48.261%, rgba(180, 136, 121, 0.9) 74.661%, rgba(93, 70, 64, 0.9) 100%);
+  color: black;
+  border: none;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+#modal-close:hover {
+  background-color: #000000;
+}

@@ -1,0 +1,152 @@
+body {
+  background: linear-gradient(45deg, #c86be7, #520f73 100%);
+  font-family: fantasy;
+}
+
+.game-container {
+  box-shadow: 7px 7px 14px #282829, -7px -7px 14px #302d2d;
+  background: linear-gradient(180.00deg, #700d68, #bc38ce, #ff71ee, #ffa1e6);
+  border-radius: 0 0 12.5% 12.5%;
+  -webkit-border-radius: 0 0 12.5% 12.5%;
+  -moz-border-radius: 0 0 12.5% 12.5%;
+  -ms-border-radius: 0 0 12.5% 12.5%;
+  -o-border-radius: 0 0 12.5% 12.5%;
+}
+
+#puzzle-container {
+  background: linear-gradient(180.00deg, #700d68, #bc38ce, #ff71ee, #ffa1e6);
+}
+
+/* Стили для основных кнопок */
+button,
+.select-selected,
+.select-style,
+#close {
+  font-family: Arial, Helvetica, sans-serif;
+  box-shadow: 2px 2px 2px 0px rgb(47, 42, 46), 2px 2px 2px 0px rgb(255, 255, 255);
+  background: linear-gradient(90.00deg, rgba(68, 4, 57, 0.5), rgb(42, 5, 43) 50%, rgba(35, 47, 49, 0.5) 100%);
+  color: rgb(244, 148, 228);
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+
+button:hover,
+.select-selected:hover,
+.select-style:hover,
+#close:hover {
+  background: hwb(319 34% 2%);
+  color: rgba(35, 47, 49, 1);
+}
+
+
+#moves,
+#timer {
+  color: #e9a7ff;
+}
+
+/* Основные стили для игрового поля */
+#puzzle-container {
+  border: 4px solid rgba(34, 2, 68, 0.5);
+  box-shadow: inset 2px 2px 4px 1px rgb(0, 0, 0), inset -2px -2px 4px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 12.5%;
+  -webkit-border-radius: 12.5%;
+  -moz-border-radius: 12.5%;
+  -ms-border-radius: 12.5%;
+  -o-border-radius: 12.5%;
+}
+
+/* Стили для костяшек */
+.tile {
+  box-shadow: 2px 2px 2px 0px rgb(18, 18, 18), 2px 2px 2px 0px rgb(35, 47, 49);
+  background: linear-gradient(90deg, rgba(58, 0, 92, 0.5), rgb(50, 0, 65) 50%, rgba(65, 1, 69, 0.5) 100%);
+  color: rgba(220, 155, 255, 0.9);
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+
+  transition: all .35s;
+  -webkit-transition: all .35s;
+  -moz-transition: all .35s;
+  -ms-transition: all .35s;
+  -o-transition: all .35s;
+}
+
+.tile:hover {
+  font-weight: 900;
+  color: rgb(35, 47, 49);
+  background: linear-gradient(180.00deg, rgba(30, 28, 34, 0.9), rgba(107, 2, 254, 0.9) 24.585%, rgba(174, 0, 255, 0.9) 48.261%, rgba(187, 0, 255, 0.9) 74.661%, rgba(128, 0, 255, 0.9) 100%);
+
+  transition: all .35s;
+  -webkit-transition: all .35s;
+  -moz-transition: all .35s;
+  -ms-transition: all .35s;
+  -o-transition: all .35s;
+}
+
+.empty,
+.empty:hover {
+  background-color: transparent;
+  background: none;
+  box-shadow: none;
+  cursor: default;
+}
+
+.select-items,
+.select-skins {
+  background: linear-gradient(90.00deg, rgba(30, 28, 34, 0.9), rgba(144, 0, 255, 0.9) 24.585%, rgba(255, 39, 233, 0.9) 48.261%, rgba(252, 87, 255, 0.9) 74.661%, rgba(162, 0, 255, 0.9) 100%);
+  color: rgb(49, 24, 5);
+}
+
+.select-items div,
+.select-skins div {
+  color: rgb(4, 4, 87);
+}
+
+.select-items div:hover,
+.select-skins div:hover {
+  background-color: #db97ff;
+}
+
+/* Отображение выпадающего списка при активации */
+
+/* Стили для модального окна с рекордами */
+
+.recordsBox__header {
+  border-bottom: 4px solid rgba(162, 122, 109, 0.5);
+}
+
+/* Стили для модального окна */
+.modal {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  background: linear-gradient(90.00deg, rgba(68, 4, 57, 0.5), rgb(42, 5, 43) 50%, rgba(35, 47, 49, 0.5) 100%);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+  color: white;
+}
+
+.recordBox__title {
+  color: black;
+}
+
+.recordItem {
+  margin-top: 8px;
+  list-style: none;
+  color: black;
+}
+
+#modal-close {
+  background-color: #ff0000;
+  color: white;
+}
+
+#modal-close:hover {
+  background-color: #ff000093;
+}

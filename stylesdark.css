@@ -1,0 +1,161 @@
+body {
+  background: linear-gradient(180.00deg, rgb(18, 25, 30) -0.477%, rgb(61, 76, 75) 161%);
+  font-family: Arial, sans-serif;
+  color: rgb(94, 248, 158);
+}
+
+.game-container {
+  box-shadow: none;
+  background: none;
+}
+
+
+/* Стили для основных кнопок */
+button,
+.select-selected,
+.select-style,
+#close {
+  border: none;
+
+  box-shadow: 1px 1px 2px 2px rgba(138, 141, 143, 0.37);
+  background: rgb(35, 47, 49);
+  color: rgb(94, 248, 158);
+
+}
+
+button:hover,
+.select-selected:hover,
+.select-style:hover,
+#close:hover {
+  box-shadow: 0px 4px 4px 0px rgb(243, 201, 104);
+  background: linear-gradient(45.85deg, rgb(150, 229, 117) 0%, rgb(35, 47, 49) 101.633%);
+  color: black;
+}
+
+button:active,
+.select-selected:active,
+.select-style:active,
+#close:active {
+  box-shadow: 2px 4px 4px 4px rgba(138, 141, 143, 0.37);
+  background: linear-gradient(45.59deg, rgb(247, 203, 63) 1.842%, rgb(141, 117, 60) 51.412%);
+}
+
+/* Стили для иконочных кнопок */
+
+
+/* Стили для счётчиков */
+#moves,
+#timer {
+  color: rgb(94, 248, 158);
+}
+
+/* Основные стили для игрового поля */
+#puzzle-container {
+  box-shadow: inset 8px 8px 4px 1px rgb(94, 248, 158), inset -8px -8px 4px 2px rgb(94, 248, 158);
+  background: rgba(94, 248, 158, .5);
+
+}
+
+/* Стили для костяшек */
+.tile {
+  box-shadow: -1.94px -1.94px 7.76px 1.94px rgb(0, 0, 0), 1.94px 1.94px 7.76px 1.94px rgb(255, 255, 255);
+  background: rgb(31, 38, 41);
+  color: rgb(94, 248, 158);
+}
+
+
+.tile:hover {
+  box-shadow: 0.4px 0.4px 2px 1.94px rgb(0, 0, 0), -0.4px -0.4px 2px 1.94px rgb(255, 255, 255);
+
+  background: linear-gradient(0deg, rgb(61, 76, 75), rgb(31, 38, 41), rgb(61, 76, 75));
+  color: rgb(229, 206, 148);
+}
+
+/* Адаптация для мобильных устройств */
+
+/* Стили для пустой ячейки */
+.empty,
+.empty:hover {
+  background-color: transparent;
+  background: none;
+  box-shadow: none;
+  cursor: default;
+}
+
+/* Стили для кастомного выпадающего списка */
+
+.select-items,
+.select-skins {
+
+  box-shadow: 1.94px 1.94px 4px 1.94px rgb(0, 0, 0), -1.94px -1.94px 4px 1.94px rgb(94, 248, 158);
+
+  background: linear-gradient(180.00deg, rgb(18, 25, 30) -0.477%, rgb(61, 76, 75) 161%);
+  font-family: Arial, sans-serif;
+
+}
+
+.select-items div,
+.select-skins div {
+  color: rgb(94, 248, 158);
+}
+
+.select-items>div:hover,
+.select-skins>div:hover {
+  background: rgb(94, 248, 158, .75);
+  color: rgb(18, 25, 30);
+}
+
+/* Отображение выпадающего списка при активации */
+
+/* Стили для модального окна с рекордами */
+
+.recordsBox {
+  background: transparent;
+  /*rgb(61, 76, 75);*/
+  outline: 10px solid rgb(61, 76, 75);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  -ms-border-radius: 12px;
+  -o-border-radius: 12px;
+}
+
+.recordsBox__header {
+  border-bottom: 4px solid rgba(71, 74, 71, 1);
+}
+
+.recordBox__title {
+  color: rgba(71, 74, 71, 1);
+}
+
+.recordItem {
+  margin-top: 8px;
+  list-style: none;
+  color: rgba(71, 74, 71, 1);
+}
+
+/* Стили для модального окна */
+.modal {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  background: rgb(35, 47, 49, .88);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#modal-close {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background: linear-gradient(180.00deg, rgb(18, 25, 30) -0.477%, rgb(61, 76, 75) 161%);
+  color: rgb(94, 248, 158);
+  border: none;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+#modal-close:hover {
+  background-color: #45a049;
+}
