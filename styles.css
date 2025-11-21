@@ -3,7 +3,6 @@ body {
   flex-flow: column nowrap;
   justify-content: space-around;
   align-items: center;
-  gap: 24px;
   max-height: 100%;
   margin: 0;
   background: #71b8e1;
@@ -11,24 +10,28 @@ body {
 }
 
 header {
+  margin: 0 auto;
+  padding: 8px 0 0 0;
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
   gap: 24px;
+  height: 1.5rem;
 
   h1 {
     color: white;
+    font-size: 1rem;
   }
 
   .logo {
-    width: 2rem;
+    width: 1rem;
     aspect-ratio: 1/1;
   }
 }
 
 .game-container {
-  padding: 24px;
+  padding: 0 24px 12px 24px;
   text-align: center;
   box-shadow: none;
   background: none;
@@ -53,10 +56,10 @@ header {
 
 @media (max-width: 518px) {
   .controls {
-    margin-top: 24px;
+    margin: 24px auto;
     width: 100%;
     flex-flow: row wrap;
-    gap: 36px;
+    gap: 24px;
   }
 
   .move-control {
