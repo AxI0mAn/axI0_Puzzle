@@ -93,18 +93,22 @@ button,
   -o-border-radius: 4px;
 }
 
-button:hover,
-.select-selected:hover,
-.select-style:hover,
-#close:hover {
-  box-shadow: 1.94px 1.94px 7.76px 1.94px rgb(0, 0, 0), -1.94px -1.94px 7.76px 1.94px rgb(255, 255, 255);
-  background: linear-gradient(45.00deg, rgb(63, 242, 255), rgb(130, 203, 248) 22%, rgb(220, 231, 250) 49.5%, rgb(130, 203, 248) 100%);
-  color: #000;
-  transition: all .7s;
-  -webkit-transition: all .7s;
-  -moz-transition: all .7s;
-  -ms-transition: all .7s;
-  -o-transition: all .7s;
+/* ✅ Применяем :hover стили ТОЛЬКО на устройствах с мышью (pointer: fine) */
+@media (hover: hover) and (pointer: fine) {
+
+  button:hover,
+  .select-selected:hover,
+  .select-style:hover,
+  #close:hover {
+    box-shadow: 1.94px 1.94px 7.76px 1.94px rgb(0, 0, 0), -1.94px -1.94px 7.76px 1.94px rgb(255, 255, 255);
+    background: linear-gradient(45.00deg, rgb(63, 242, 255), rgb(130, 203, 248) 22%, rgb(220, 231, 250) 49.5%, rgb(130, 203, 248) 100%);
+    color: #000;
+    transition: all .7s;
+    -webkit-transition: all .7s;
+    -moz-transition: all .7s;
+    -ms-transition: all .7s;
+    -o-transition: all .7s;
+  }
 }
 
 button:active,
