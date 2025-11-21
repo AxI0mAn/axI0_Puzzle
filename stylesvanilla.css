@@ -23,18 +23,6 @@ body {
   width: 100%;
 }
 
-.header,
-.accounting,
-.controls {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
-.controls {
-  width: 100%;
-}
 
 /* Стили для основных кнопок */
 button,

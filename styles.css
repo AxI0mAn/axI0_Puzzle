@@ -51,6 +51,27 @@ header {
   width: 100%;
 }
 
+@media (max-width: 518px) {
+  .controls {
+    margin-top: 24px;
+    width: 100%;
+    flex-flow: row wrap;
+    gap: 36px;
+  }
+
+  .move-control {
+    order: 4;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .move-control>button:nth-child(2) {
+    margin-left: 24px;
+  }
+}
+
 /* Стили для основных кнопок */
 button,
 .select-selected,
