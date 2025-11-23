@@ -1,9 +1,15 @@
 let gridSize = 4; // По умолчанию 4x4
-let tiles = [];
-let emptyTile = { row: gridSize - 1, col: gridSize - 1 }; // Пустая клетка в начальной позиции
-const puzzleContainer = document.getElementById('puzzle-container');
+let tiles = []; // Массив, хранящий элементы в порядке их расположения на сетке (0..15)
+let emptyTileIndex = gridSize * gridSize - 1; // Индекс пустой клетки в массиве tiles
+let isAnimating = false; // Блокировка ввода во время анимации
+let moveCount = 0; // Локальный счетчик ходов (чтобы код не ломался)
 
-// размер шрифта костяшек
+const puzzleContainer = document.getElementById('puzzle-container');
+// Пытаемся найти элементы интерфейса, если они есть, чтобы не ломать старый код
+const timerElement = document.getElementById('timer') || { textContent: '00:00' };
+
+// --- Вспомогательные функции ---
+
 function tileFontSize(grid, til) {
   if (grid === 4 || grid === 5) {
     til.style.fontSize = '2.5rem';
@@ -12,206 +18,259 @@ function tileFontSize(grid, til) {
   } else if (grid === 8) {
     til.style.fontSize = '1rem';
   }
-
 }
 
-// Инициализация игры
-function initializeGame() {
+// --- Работа с localStorage  ---
 
-  tiles = [];
-  puzzleContainer.innerHTML = '';
+// === -📝=TODO=📝- === хранение последней использованной темы и размера поля
+// === -📝=TODO=📝- === при выходе - сохранить не законченную игру, а при повторном входе - предложить продолжить
+
+// --- Основная логика ---
+
+function initializeGame() {
   puzzleContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
   puzzleContainer.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
 
-  const totalTiles = gridSize * gridSize - 1;
+  // Очищаем и пересоздаем массив и DOM только если размер изменился или это первый запуск
+  // Для надежности при рестарте создадим заново, но оптимизированно (через Fragment)
+  puzzleContainer.innerHTML = '';
+  tiles = [];
 
-  // Создаем костяшки
-  for (let i = 1; i <= totalTiles; i++) {
+  const fragment = document.createDocumentFragment();
+  const totalTiles = gridSize * gridSize;
+
+  for (let i = 0; i < totalTiles; i++) {
     const tile = document.createElement('div');
     tile.classList.add('tile');
-    tileFontSize(gridSize, tile);
-    tile.textContent = i;
-    tile.addEventListener('click', () => moveTile(i));
+
+    // Оптимизация CSS для GPU
+    tile.style.willChange = 'transform, order';
+    tile.style.transform = 'translateZ(0)';
+
+    // Устанавливаем начальный order
+    tile.style.order = i;
+
+    if (i === totalTiles - 1) {
+      // Пустая клетка
+      tile.classList.add('empty');
+      tile.dataset.value = '';
+      emptyTileIndex = i;
+    } else {
+      // Обычная костяшка
+      tileFontSize(gridSize, tile);
+      tile.textContent = i + 1;
+      tile.dataset.value = i + 1;
+      tile.addEventListener('click', () => handleTileClick(tile));
+    }
+
+    fragment.appendChild(tile);
     tiles.push(tile);
   }
 
-  // Добавляем пустую костяшку
-  const empty = document.createElement('div');
-  empty.classList.add('tile', 'empty');
-  tiles.push(empty);
+  puzzleContainer.appendChild(fragment);
 
-  // Сбрасываем позицию пустой клетки
-  emptyTile = { row: gridSize - 1, col: gridSize - 1 };
+  // Сбрасываем счетчики
+  moveCount = 0;
+  if (typeof updatemoveCountCurr === 'function') updatemoveCountCurr(0);
 
-  // Перемешиваем костяшки
+  // Перемешиваем
   shuffleTiles();
-
-  // Отображаем костяшки
-  renderTiles();
 }
 
-// Функция для перемешивания костяшек
-function shuffleTiles() {
-  for (let i = 0; i < 1000; i++) {
-    const movableTiles = getMovableTiles();
-    const randomTile = movableTiles[Math.floor(Math.random() * movableTiles.length)];
-    swapTiles(randomTile, emptyTile);
+// Функция обработки клика (обертка над moveTile)
+function handleTileClick(clickedTile) {
+  if (isAnimating) return;
+
+  // Находим актуальный индекс элемента в массиве (он соответствует позиции на сетке)
+  const index = tiles.indexOf(clickedTile);
+  moveTile(index);
+}
+
+function moveTile(index) {
+  const row = Math.floor(index / gridSize);
+  const col = index % gridSize;
+  const emptyRow = Math.floor(emptyTileIndex / gridSize);
+  const emptyCol = emptyTileIndex % gridSize;
+
+  // Проверяем соседство
+  const isAdjacent =
+    (Math.abs(row - emptyRow) === 1 && col === emptyCol) ||
+    (Math.abs(col - emptyCol) === 1 && row === emptyRow);
+
+  if (isAdjacent) {
+    // Сохраняем ТЕКУЩЕЕ состояние ПЕРЕД тем, как оно изменится.
+    // Это исправит игнорирование первого нажатия.
+    addMoveToHistory(getCurrentState());
+
+    // Теперь делаем ход
+    swapTiles(index, emptyTileIndex);
   }
 }
 
-// Функция для получения костяшек, которые можно переместить
-function getMovableTiles() {
-  const movableTiles = [];
-  const directions = [
-    { row: emptyTile.row - 1, col: emptyTile.col }, // Верхняя костяшка
-    { row: emptyTile.row + 1, col: emptyTile.col }, // Нижняя костяшка
-    { row: emptyTile.row, col: emptyTile.col - 1 }, // Левая костяшка
-    { row: emptyTile.row, col: emptyTile.col + 1 }, // Правая костяшка
-  ];
+// Анимация и обмен
+function swapTiles(tileIndex, emptyIndex) {
+  isAnimating = true;
 
-  directions.forEach((dir) => {
-    if (dir.row >= 0 && dir.row < gridSize && dir.col >= 0 && dir.col < gridSize) {
-      movableTiles.push({ row: dir.row, col: dir.col });
-    }
-  });
+  const tileElement = tiles[tileIndex];
+  const emptyElement = tiles[emptyIndex];
 
-  return movableTiles;
-}
-
-// Функция для перемещения костяшки
-function moveTile(number) {
-  const tileIndex = tiles.findIndex((tile) => tile.textContent == number);
+  // Вычисляем координаты
   const tileRow = Math.floor(tileIndex / gridSize);
   const tileCol = tileIndex % gridSize;
+  const emptyRow = Math.floor(emptyIndex / gridSize);
+  const emptyCol = emptyIndex % gridSize;
 
-  // Проверяем, находится ли костяшка рядом с пустой клеткой
-  if (isAdjacentToEmpty(tileRow, tileCol)) {
-    const move = {
-      tile: { row: tileRow, col: tileCol }, // Координаты костяшки
-      empty: { ...emptyTile }, // Координаты пустой клетки
-    };
-    addMoveToHistory(getCurrentState()); // Сохраняем текущее состояние
-    swapTiles(move.tile, move.empty); // Меняем местами костяшку и пустую клетку
-    emptyTile = move.tile; // Обновляем позицию пустой клетки
-    renderTiles(); // Перерисовываем поле
-    updateMoveCount(1); // Обновляем счётчик ходов
-    checkWin(); // Проверяем, выиграл ли игрок
+  // Разница для анимации (сдвиг в %)
+  const deltaX = (emptyCol - tileCol) * 100;
+  const deltaY = (emptyRow - tileRow) * 100;
+
+  // 1. Применяем анимацию через CSS Custom Properties
+  tileElement.style.setProperty('--tx', `${deltaX}%`);
+  tileElement.style.setProperty('--ty', `${deltaY}%`);
+  tileElement.classList.add('animate-move');
+
+  // 2. Ждем окончания анимации
+  tileElement.addEventListener('animationend', () => {
+    // Снимаем класс анимации
+    tileElement.classList.remove('animate-move');
+    tileElement.style.removeProperty('--tx');
+    tileElement.style.removeProperty('--ty');
+
+    // 3. Фактический обмен данными и DOM (order)
+    performSwap(tileIndex, emptyIndex);
+
+    // Разблокируем ввод
+    isAnimating = false;
+
+    // Логика игры (счетчик и победа)
+    incrementMove();
+    checkWin();
+  }, { once: true });
+}
+
+// Мгновенный обмен без анимации (для перемешивания и завершения хода)
+function performSwap(index1, index2) {
+  // 1. Обмен в массиве tiles
+  [tiles[index1], tiles[index2]] = [tiles[index2], tiles[index1]];
+
+  // 2. Обмен CSS order
+  tiles[index1].style.order = index1;
+  tiles[index2].style.order = index2;
+
+  // 3. Обновляем указатель на пустую клетку
+  // Если один из индексов был пустым, обновляем глобальную переменную
+  if (tiles[index1].classList.contains('empty')) emptyTileIndex = index1;
+  if (tiles[index2].classList.contains('empty')) emptyTileIndex = index2;
+}
+
+// Перемешивание (без анимации и перерисовок)
+function shuffleTiles() {
+  // Делаем 1000 валидных ходов в памяти
+  for (let i = 0; i < 1000; i++) {
+    const neighbors = getNeighbors(emptyTileIndex);
+    const randomNeighborIndex = neighbors[Math.floor(Math.random() * neighbors.length)];
+    performSwap(randomNeighborIndex, emptyTileIndex);
   }
 }
 
-// Функция для проверки, находится ли костяшка рядом с пустой клеткой
-function isAdjacentToEmpty(row, col) {
-  return (
-    (Math.abs(row - emptyTile.row) === 1 && col === emptyTile.col) || // Сверху или снизу
-    (Math.abs(col - emptyTile.col) === 1 && row === emptyTile.row) // Слева или справа
-  );
+function getNeighbors(index) {
+  const row = Math.floor(index / gridSize);
+  const col = index % gridSize;
+  const neighbors = [];
+
+  if (row > 0) neighbors.push(index - gridSize); // Верх
+  if (row < gridSize - 1) neighbors.push(index + gridSize); // Низ
+  if (col > 0) neighbors.push(index - 1); // Лево
+  if (col < gridSize - 1) neighbors.push(index + 1); // Право
+
+  return neighbors;
 }
 
-// Функция для обмена местами костяшки и пустой клетки без анимации
-
-// function swapTiles(tile1, tile2) {
-//   const index1 = tile1.row * gridSize + tile1.col;
-//   const index2 = tile2.row * gridSize + tile2.col;
-//   [tiles[index1], tiles[index2]] = [tiles[index2], tiles[index1]];
-//   emptyTile = tile1; // Обновляем позицию пустой клетки
-// }
-
-// Функция для анимации обмена местами костяшки и пустой клетки
-let isAnimating = false; // Флаг для блокировки анимации
-
-function swapTiles(tile1, tile2) {
-  if (isAnimating) return; // Если анимация выполняется, выходим из функции
-
-  const index1 = tile1.row * gridSize + tile1.col;
-  const index2 = tile2.row * gridSize + tile2.col;
-
-  // Получаем DOM-элементы костяшек
-  const tileElement1 = tiles[index1];
-  const tileElement2 = tiles[index2];
-
-  // Вычисляем разницу в позициях для анимации
-  const fromX = (tile2.col - tile1.col) * -100 + '%';
-  const fromY = (tile2.row - tile1.row) * -100 + '%';
-
-  // Применяем анимацию к костяшке
-  tileElement1.style.setProperty('--from-x', fromX);
-  tileElement1.style.setProperty('--from-y', fromY);
-  tileElement1.classList.add('animate');
-
-  // Меняем местами костяшки в массиве
-  [tiles[index1], tiles[index2]] = [tiles[index2], tiles[index1]];
-
-  // Обновляем позицию пустой клетки
-  emptyTile = tile1;
-
-  // Убираем анимацию после завершения
-  tileElement1.addEventListener('animationend', () => {
-    tileElement1.classList.remove('animate');
-    isAnimating = false;
-  }, { once: true });
-
-  // Перерисовываем поле
-  renderTiles();
-}
-
-// Функция для отрисовки костяшек
-function renderTiles() {
-  puzzleContainer.innerHTML = '';
-  tiles.forEach((tile, index) => {
-    tile.style.order = index; // Используем CSS order для позиционирования
-    puzzleContainer.appendChild(tile);
-  });
-}
-
-// Функция для проверки победы
+// Проверка победы
 function checkWin() {
+  // Проверяем, упорядочен ли массив data-value
   const isWin = tiles.every((tile, index) => {
-    if (index === gridSize * gridSize - 1) return true; // Последняя клетка пустая
-    return tile.textContent == index + 1;
+    // Последняя клетка должна быть пустой
+    if (index === gridSize * gridSize - 1) return tile.classList.contains('empty');
+    // Остальные должны совпадать с индексом + 1
+    return tile.dataset.value == (index + 1);
   });
 
   if (isWin) {
-    stopTimer();
-    // alert(`script.js Поздравляем! Вы выиграли за ${moveCount} ходов и ${timerElement.textContent}!`);
-    updateRecords(gridSize, moveCount, timerElement.textContent); // Обновляем рекорды
+    // Вызываем внешние функции если они есть, иначе алерт
+    if (typeof stopTimer === 'function') resetGame(); //TODO stopTimer();
+    if (typeof updateRecords === 'function') {
+      updateRecords(gridSize, moveCount, timerElement.textContent);
+    } else {
+      // alert(`Победа! Ходов: ${moveCount}`);
+      console.log("Победа!");
+    }
   }
 }
-// Функция для получения текущего состояния поля
+
+// Безопасное обновление счетчика
+function incrementMove() {
+  moveCount++;
+  if (typeof updatemoveCountCurr === 'function') {
+    updatemoveCountCurr(moveCount);
+  } else {
+    // Пытаемся найти элемент на странице, если функции нет
+    const countEl = document.getElementById('move-count');
+    if (countEl) countEl.textContent = moveCount;
+  }
+}
+
+// Получение состояния для сохранения (совместимость)
 function getCurrentState() {
-  const state = [];
-  for (let row = 0; row < gridSize; row++) {
-    const rowState = [];
-    for (let col = 0; col < gridSize; col++) {
-      const index = row * gridSize + col;
-      rowState.push(tiles[index].textContent || ''); // Сохраняем текст костяшки или пустую строку
-    }
-    state.push(rowState);
-  }
-  return state;
+  return tiles.map(tile => tile.dataset.value || '');
 }
 
-// Функция для восстановления состояния поля
-function restoreState(state) {
-  tiles = [];
-  for (let row = 0; row < gridSize; row++) {
-    for (let col = 0; col < gridSize; col++) {
-      const value = state[row][col];
-      const tile = document.createElement('div');
-      if (value === '') {
-        tile.classList.add('tile', 'empty');
-        emptyTile = { row, col }; // Обновляем позицию пустой клетки
-      } else {
-        tile.classList.add('tile');
-        tile.textContent = value;
-        tile.addEventListener('click', () => moveTile(value));
+// Восстановление состояния (совместимость)
+function restoreState(savedStateValues) {
+  // Защита от пустых данных
+  if (!savedStateValues || savedStateValues.length === 0) return;
+
+  // 1. Приводим savedStateValues к плоскому массиву (если он был 2D)
+  const flatValues = savedStateValues.flat ? savedStateValues.flat() : savedStateValues;
+
+  // 2. Создаем карту для быстрого поиска DOM-элементов: "значение" -> HTMLElement
+  const valueMap = {};
+  tiles.forEach(tile => {
+    // Используем String(), чтобы "1" и 1 считались одним и тем же
+    valueMap[String(tile.dataset.value)] = tile;
+  });
+
+  // 3. Собираем новый массив tiles в том порядке, который пришел из истории
+  const newTiles = [];
+
+  flatValues.forEach((val, index) => {
+    // Находим элемент. val может быть числом, приводим к строке
+    const tile = valueMap[String(val)];
+
+    if (tile) {
+      newTiles.push(tile);
+
+      // Визуально переставляем элемент (CSS order)
+      tile.style.order = index;
+
+      // Удаляем возможные классы анимации, чтобы элемент не "застрял" в движении
+      tile.classList.remove('animate-move');
+      tile.style.removeProperty('--tx');
+      tile.style.removeProperty('--ty');
+
+      // Обновляем глобальный индекс пустой клетки, если это она
+      if (tile.classList.contains('empty')) {
+        emptyTileIndex = index;
       }
-      tileFontSize(gridSize, tile);
-      tiles.push(tile);
+    } else {
+      console.error("Не найден элемент для значения:", val);
     }
-  }
-  renderTiles();
-}
+  });
 
-// Инициализация игры при загрузке
+  // 4. Заменяем глобальный массив tiles на восстановленный
+  tiles = newTiles;
+
+}
+// Теперь запускаем игру с уже правильными gridSize и темой
 initializeGame();
 

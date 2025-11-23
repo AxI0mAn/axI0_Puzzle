@@ -6,15 +6,16 @@ body {
 .game-container {
   box-shadow: 7px 7px 14px #282829, -7px -7px 14px #302d2d;
   background: linear-gradient(180.00deg, #700d68, #bc38ce, #ff71ee, #ffa1e6);
-  border-radius: 0 0 12.5% 12.5%;
-  -webkit-border-radius: 0 0 12.5% 12.5%;
-  -moz-border-radius: 0 0 12.5% 12.5%;
-  -ms-border-radius: 0 0 12.5% 12.5%;
-  -o-border-radius: 0 0 12.5% 12.5%;
+  border-radius: 12.5%;
+  -webkit-border-radius: 12.5%;
+  -moz-border-radius: 12.5%;
+  -ms-border-radius: 12.5%;
+  -o-border-radius: 12.5%;
+  padding-top: 12px;
 }
 
 #puzzle-container {
-  background: linear-gradient(180.00deg, #700d68, #bc38ce, #ff71ee, #ffa1e6);
+  background: linear-gradient(180.00deg, rgba(112, 13, 104), #bc38ce, #ff71ee, #ffa1e6);
 }
 
 /* Стили для основных кнопок */
@@ -71,12 +72,6 @@ button,
   -moz-border-radius: 50%;
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
-
-  transition: all .35s;
-  -webkit-transition: all .35s;
-  -moz-transition: all .35s;
-  -ms-transition: all .35s;
-  -o-transition: all .35s;
 }
 
 /* ✅ Применяем :hover стили ТОЛЬКО на устройствах с мышью (pointer: fine) */

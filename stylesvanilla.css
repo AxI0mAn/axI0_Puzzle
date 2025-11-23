@@ -154,11 +154,6 @@ button#records {
   -moz-border-radius: 8px;
   -ms-border-radius: 8px;
   -o-border-radius: 8px;
-  transition: all 1s;
-  -webkit-transition: all 1s;
-  -moz-transition: all 1s;
-  -ms-transition: all 1s;
-  -o-transition: all 1s;
 }
 
 /* ✅ Применяем :hover стили ТОЛЬКО на устройствах с мышью (pointer: fine) */
@@ -278,16 +273,6 @@ button#records {
   margin-right: 20px;
 }
 
-.recordsList {
-  padding-left: 10px;
-  text-align: left;
-  font-size: large;
-}
-
-.recordItem {
-  margin-top: 8px;
-  list-style: none;
-}
 
 /* Стили для модального окна */
 .modal {

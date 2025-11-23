@@ -26,7 +26,6 @@ function changeSkin(skin) {
   }
 
   // Если выбран не default, добавляем новый стиль
-
   if (skin === 'light') {
     return;
   }
@@ -37,10 +36,8 @@ function changeSkin(skin) {
     document.head.appendChild(newLink);
   }
 
-
   // Обновляем текущий стиль
   currentSkin = skin;
-
 }
 
 // Обработчик для выбора стиля
