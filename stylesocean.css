@@ -7,6 +7,8 @@ body {
 .game-container {
   box-shadow: 7px 7px 14px #00024f, -7px -7px 14px #00024f;
   background: linear-gradient(180.00deg, #00024f, #0005aa, #0044ba, #019bfa);
+
+  padding-top: 12px;
 }
 
 /* Стили для основных кнопок */
@@ -15,7 +17,6 @@ button,
 .select-style,
 #close {
   font-family: Arial, Helvetica, sans-serif;
-
   border-radius: 4px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -97,11 +98,6 @@ button,
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
   -o-border-radius: 4px;
-  transition: all .5s;
-  -webkit-transition: all .5s;
-  -moz-transition: all .5s;
-  -ms-transition: all .5s;
-  -o-transition: all .5s;
 }
 
 /* ✅ Применяем :hover стили ТОЛЬКО на устройствах с мышью (pointer: fine) */

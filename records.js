@@ -8,6 +8,9 @@ closeButton.textContent = '❌';
 const RECORDS_KEY = 'puzzleRecords';
 const MAX_RECORDS = 10;
 
+// Флаг состояния: открыты ли рекорды сейчас
+let isRecordsOpen = false;
+
 // Инициализация рекордов
 function initializeRecords() {
   if (!localStorage.getItem(RECORDS_KEY)) {
@@ -32,7 +35,6 @@ function updateRecords(gridSize, moves, time) {
   const records = JSON.parse(localStorage.getItem(RECORDS_KEY));
   const currentRecords = records[`${gridSize}x${gridSize}`];
 
-  // Создаем новый объект с результатами
   const newRecord = {
     date: new Date().toLocaleDateString(),
     time: new Date().toLocaleTimeString(),
@@ -40,10 +42,8 @@ function updateRecords(gridSize, moves, time) {
     timeSpent: time,
   };
 
-  // Добавляем новый результат в массив
   currentRecords.push(newRecord);
 
-  // Сортируем массив по количеству ходов и времени
   currentRecords.sort((a, b) => {
     if (a.moves === b.moves) {
       return a.timeSpent.localeCompare(b.timeSpent);
@@ -51,42 +51,38 @@ function updateRecords(gridSize, moves, time) {
     return a.moves - b.moves;
   });
 
-  // Оставляем только 10 лучших результатов
   if (currentRecords.length > MAX_RECORDS) {
     currentRecords.splice(MAX_RECORDS);
   }
 
-  // Обновляем локальное хранилище
   records[`${gridSize}x${gridSize}`] = currentRecords;
   localStorage.setItem(RECORDS_KEY, JSON.stringify(records));
 }
 
 // Отображение рекордов
 function showRecords(gridSize) {
+  if (isRecordsOpen) return; // Защита от двойного открытия
+
+  // 1. Добавляем состояние в историю браузера (для кнопки "Назад" на телефоне)
+  history.pushState({ modal: 'records' }, '', '#records');
+  isRecordsOpen = true;
+
   const records = getRecords(gridSize);
   puzzleContainer.innerHTML = '';
 
-  // Создаём контейнер для рекордов
   const recordsBox = document.createElement('div');
   recordsBox.classList.add('recordsBox');
 
-  // Coздаём header = title + closeButton
   const header = document.createElement('div');
-  header.classList.add('recordsBox__header')
+  header.classList.add('recordsBox__header');
 
-  // Создаем и добавляем заголовок
   const title = document.createElement('h2');
-  title.classList.add('recordBox__title')
+  title.classList.add('recordBox__title');
   title.textContent = `Best result for ${gridSize}x${gridSize}`;
   header.appendChild(title);
-
-  // Добавляем кнопку закрытия
   header.appendChild(closeButton);
-
-  // Добавляем header
   recordsBox.appendChild(header);
 
-  // Создаем и добавляем список рекордов
   const recordsList = document.createElement('ul');
   recordsList.classList.add('recordsList');
   records.forEach((record, index) => {
@@ -97,33 +93,65 @@ function showRecords(gridSize) {
   });
 
   recordsBox.appendChild(recordsList);
-
-  // Добавляем информацию о рекордах 
   puzzleContainer.appendChild(recordsBox);
 }
 
-// Обработчик кнопки "Рекорды"
-recordsButton.addEventListener('click', () => {
-  showRecords(gridSize);
+// Функция фактического закрытия окна (восстановления игры)
+function closeRecordsUI() {
+  isRecordsOpen = false;
+
+  // Важно: renderTiles() просто отрисует поле заново без сброса игры.
+  // Если renderTiles недоступен глобально, используйте initializeGame(), 
+  // но initializeGame сбросит прогресс текущей партии.
+  if (typeof renderTiles === 'function') {
+    puzzleContainer.innerHTML = ''; // Очистить рекорды
+    // Восстанавливаем DOM костяшек (если они были сохранены в переменной tiles)
+    tiles.forEach(tile => puzzleContainer.appendChild(tile));
+  } else {
+    initializeGame();
+  }
+}
+
+// --- ОБРАБОТЧИКИ СОБЫТИЙ ---
+
+// 1. Обработка системной кнопки "Назад" (Mobile Back Button)
+window.addEventListener('popstate', (event) => {
+  // Если мы были в режиме рекордов и нажали "Назад"
+  if (isRecordsOpen) {
+    closeRecordsUI();
+  }
 });
 
-// Обработчик кнопки "Закрыть"
-closeButton.addEventListener('click', () => {
-  initializeGame();
+// 2. Обработчик кнопки "Рекорды" (работает как переключатель)
+recordsButton.addEventListener('click', () => {
+  if (isRecordsOpen) {
+    // Если открыто -> вызываем history.back(), чтобы закрыть через popstate
+    history.back();
+  } else {
+    // Если закрыто -> открываем
+    showRecords(gridSize);
+  }
 });
+
+// 3. Обработчик кнопки "Закрыть" (крестик)
+closeButton.addEventListener('click', () => {
+  // Вызываем history.back(), чтобы убрать запись из истории и закрыть окно
+  history.back();
+});
+
 
 // Инициализация рекордов при загрузке
 initializeRecords();
 
-// Обновление рекордов после выигрыша
+// Обновление рекордов после выигрыша (без изменений)
 function checkWin() {
   const isWin = tiles.every((tile, index) => {
-    if (index === gridSize * gridSize - 1) return true; // Последняя клетка пустая
-    return tile.textContent == index + 1;
+    if (index === gridSize * gridSize - 1) return true;
+    return tile.dataset.value == index + 1;
   });
 
   if (isWin) {
-    stopTimer();
+    if (typeof stopTimer === 'function') stopTimer();
     updateRecords(gridSize, moveCount, timerElement.textContent);
     console.log(`records.js You've won for ${moveCount} steps and ${timerElement.textContent}!`);
   }

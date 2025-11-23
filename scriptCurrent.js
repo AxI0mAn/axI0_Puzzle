@@ -1,10 +1,10 @@
-let moveCount = 0;
+let moveCountCurr = 0;
 let timerInterval = null;
 let startTime = null;
 
 // Элементы интерфейса
 const movesElement = document.getElementById('moves');
-const timerElement = document.getElementById('timer');
+const timerElementCurr = document.getElementById('timer');
 const newGameButton = document.getElementById('new-game');
 
 
@@ -36,6 +36,7 @@ selectItems.querySelectorAll('div').forEach((item) => {
     emptyTile = { row: gridSize - 1, col: gridSize - 1 };
     initializeGame();
     resetGame();
+
     moveHistory = []; // Сбрасываем историю ходов
     redoHistory = []; // Сбрасываем историю возврата
   });
@@ -50,10 +51,10 @@ document.addEventListener('click', (event) => {
 
 // Функция для сброса игры
 function resetGame() {
-  moveCount = 0;
-  movesElement.textContent = `Step: ${moveCount}`;
+  moveCountCurr = 0;
+  movesElement.textContent = `Step: ${moveCountCurr}`;
   stopTimer();
-  timerElement.textContent = 'Time: 00:00:00';
+  timerElementCurr.textContent = 'Time: 00:00';
 }
 
 // Функция для запуска таймера
@@ -64,6 +65,42 @@ function startTimer() {
   }
 }
 
+// Функция для обновления таймера
+function updateTimer() {
+  // Вычисляем общее прошедшее время в миллисекундах
+  const currentTime = Date.now() - startTime;
+
+  // --- 1. РАСЧЕТ ВРЕМЕНИ ---
+
+  // Часы (более 1 часа)
+  const hours = Math.floor(currentTime / 3600000);
+  // Минуты (остаток после вычитания часов)
+  const minutes = Math.floor((currentTime % 3600000) / 60000);
+  // Секунды (остаток после вычитания минут)
+  const seconds = Math.floor((currentTime % 60000) / 1000);
+
+  // --- 2. ФОРМАТИРОВАНИЕ ---
+
+  // Форматируем минуты, секунды и миллисекунды
+  const formattedMinutes = String(minutes).padStart(2, '0');
+  const formattedSeconds = String(seconds).padStart(2, '0');
+
+  let timeString;
+
+  if (hours >= 1) {
+    // Формат: ЧЧ:ММ:СС.МС (Часы показываются)
+    const formattedHours = String(hours).padStart(2, '0');
+    timeString = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  } else {
+    // Формат: ММ:СС.МС (Часы не показываются)
+    timeString = `${formattedMinutes}:${formattedSeconds}`;
+  }
+
+  // Обновляем элемент на странице
+  timerElementCurr.textContent = `Time: ${timeString}`;
+}
+
+
 // Функция для остановки таймера
 function stopTimer() {
   if (timerInterval) {
@@ -72,22 +109,13 @@ function stopTimer() {
   }
 }
 
-// Функция для обновления таймера
-function updateTimer() {
-  const currentTime = Date.now() - startTime;
-  const hours = Math.floor(currentTime / 3600000);
-  const minutes = Math.floor((currentTime % 3600000) / 60000);
-  const seconds = Math.floor((currentTime % 60000) / 1000);
-
-  timerElement.textContent = `Time: ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-}
-
 // Функция для обновления счётчика ходов
-function updateMoveCount(delta) {
-  moveCount += delta;
-  movesElement.textContent = `Step: ${moveCount}`;
+function updatemoveCountCurr(delta) {
+  moveCountCurr = delta;
+  movesElement.textContent = `Step: ${moveCountCurr}`;
 
-  if (moveCount === 1) {
+  if (moveCountCurr === 1) {
     startTimer(); // Запускаем таймер при первом ходе
   }
 }
+
