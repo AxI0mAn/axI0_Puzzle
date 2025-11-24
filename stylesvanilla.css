@@ -1,9 +1,4 @@
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
   background: linear-gradient(180.00deg, rgba(30, 28, 34, 1), rgba(93, 70, 64, 1) 24.585%, rgba(162, 137, 122, 1) 48.261%, rgba(180, 136, 121, 1) 74.661%, rgba(93, 70, 64, 1) 100%);
   font-family: Arial, sans-serif;
 }

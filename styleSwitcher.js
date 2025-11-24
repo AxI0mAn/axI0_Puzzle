@@ -11,7 +11,6 @@ selectStyle.addEventListener('click', () => {
 });
 
 
-
 // Текущий выбранный стиль
 let currentSkin = 'styles';
 
