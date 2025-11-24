@@ -30,6 +30,8 @@ function changeSkin(skin) {
   }
   if (skin !== 'styles') {
     const newLink = document.createElement('link');
+    newLink.id = 'themeName';
+    newLink.className = `${skin}`;
     newLink.rel = 'stylesheet';
     newLink.href = `styles${skin}.css`;
     document.head.appendChild(newLink);
@@ -37,6 +39,7 @@ function changeSkin(skin) {
 
   // Обновляем текущий стиль
   currentSkin = skin;
+  meta_link_cur()
 }
 
 // Обработчик для выбора стиля
